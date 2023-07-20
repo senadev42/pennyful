@@ -36,6 +36,8 @@ import {
 } from "./pages/categories";
 import { useState, useEffect } from "react";
 import { DashboardPage } from "./pages/dashboard";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   const [identity, setIdentity] = useState<any | null>();
@@ -55,7 +57,7 @@ function App() {
         <Refine
           dataProvider={dataProvider(supabaseClient)}
           liveProvider={liveProvider(supabaseClient)}
-          authProvider={authProvider}
+          // authProvider={authProvider}
           routerProvider={routerBindings}
           resources={[
             { name: "dashboard", list: "/dashboard" },
@@ -121,32 +123,8 @@ function App() {
                 </Authenticated>
               }
             >
-              <Route
-                path="/login"
-                element={
-                  <AuthPage
-                    type="login"
-                    renderContent={(content) => (
-                      <div>
-                        <p
-                          style={{
-                            padding: 10,
-                            color: "#004085",
-                            backgroundColor: "#cce5ff",
-                            borderColor: "#b8daff",
-                            textAlign: "center",
-                          }}
-                        >
-                          email: info@refine.dev
-                          <br /> password: refine-supabase
-                        </p>
-                        {content}
-                      </div>
-                    )}
-                  />
-                }
-              />
-              <Route path="/register" element={<AuthPage type="register" />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
               <Route
                 path="/forgot-password"
                 element={<AuthPage type="forgotPassword" />}
