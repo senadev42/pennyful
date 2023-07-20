@@ -38,6 +38,12 @@ import { useState, useEffect } from "react";
 import { DashboardPage } from "./pages/dashboard";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import {
+  BudgetList,
+  BudgetCreate,
+  BudgetEdit,
+  BudgetShow,
+} from "./pages/budgets";
 
 function App() {
   const [identity, setIdentity] = useState<any | null>();
@@ -81,6 +87,16 @@ function App() {
                 canDelete: true,
               },
             },
+            {
+              name: "budgets",
+              list: "/budgets",
+              create: "/budgets/create",
+              edit: "/budgets/edit/:id",
+              show: "/budgets/show/:id",
+              meta: {
+                canDelete: true,
+              },
+            },
           ]}
           options={{
             syncWithLocation: true,
@@ -112,6 +128,12 @@ function App() {
                 <Route path="create" element={<ExpenseCreate />} />
                 <Route path="edit/:id" element={<ExpenseEdit />} />
                 <Route path="show/:id" element={<ExpenseShow />} />
+              </Route>
+              <Route path="/budgets">
+                <Route index element={<BudgetList />} />
+                <Route path="create" element={<BudgetCreate />} />
+                <Route path="edit/:id" element={<BudgetEdit />} />
+                <Route path="show/:id" element={<BudgetShow />} />
               </Route>
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="*" element={<ErrorComponent />} />
