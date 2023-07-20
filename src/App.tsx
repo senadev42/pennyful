@@ -18,24 +18,39 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
 import authProvider from "./authProvider";
 import { Layout } from "./components/layout";
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from "./pages/categories";
+
 import { supabaseClient } from "./utility";
+
+//Pages
 import {
   ExpenseList,
   ExpenseCreate,
   ExpenseEdit,
   ExpenseShow,
 } from "./pages/expenses";
+import {
+  CategoryCreate,
+  CategoryEdit,
+  CategoryList,
+  CategoryShow,
+} from "./pages/categories";
+import { useState, useEffect } from "react";
+import { DashboardPage } from "./pages/dashboard";
 
 function App() {
+  const [identity, setIdentity] = useState<any | null>();
+
+  useEffect(() => {
+    async function fetchIdentity() {
+      const identity = await authProvider.getIdentity?.();
+      setIdentity(identity);
+    }
+    fetchIdentity();
+  }, []);
   return (
     <BrowserRouter>
       {/* <GitHubBanner /> */}
+
       <RefineKbarProvider>
         <Refine
           dataProvider={dataProvider(supabaseClient)}
@@ -43,22 +58,23 @@ function App() {
           authProvider={authProvider}
           routerProvider={routerBindings}
           resources={[
-            {
-              name: "categories",
-              list: "/categories",
-              create: "/categories/create",
-              edit: "/categories/edit/:id",
-              show: "/categories/show/:id",
-              meta: {
-                canDelete: true,
-              },
-            },
+            { name: "dashboard", list: "/dashboard" },
             {
               name: "expenses",
               list: "/expenses",
               create: "/expenses/create",
               edit: "/expenses/edit/:id",
               show: "/expenses/show/:id",
+              meta: {
+                canDelete: true,
+              },
+            },
+            {
+              name: "categories",
+              list: "/categories",
+              create: "/categories/create",
+              edit: "/categories/edit/:id",
+              show: "/categories/show/:id",
               meta: {
                 canDelete: true,
               },
@@ -95,6 +111,7 @@ function App() {
                 <Route path="edit/:id" element={<ExpenseEdit />} />
                 <Route path="show/:id" element={<ExpenseShow />} />
               </Route>
+              <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="*" element={<ErrorComponent />} />
             </Route>
             <Route
