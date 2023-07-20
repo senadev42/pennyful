@@ -11,28 +11,92 @@ import {
   TabPanels,
 } from "@tremor/react";
 
+import { useEffect, useState } from "react";
+import { supabaseClient } from "../../utility/supabaseClient";
+
+import { SpendCard } from "./SpendCard";
+
+import {
+  getSpendPerCategory,
+  getSpendPerMonth,
+  getSpendPerWeek,
+} from "./utils";
+
 export const DashboardPage: React.FC = () => {
+  const [tableData, setTableData] = useState([]);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchTableData = async () => {
+      const { data, error } = await supabaseClient.from("expenses").select("*");
+      if (error) {
+        console.error(error);
+      } else {
+        setTableData(data);
+      }
+    };
+    fetchTableData();
+  }, []);
+
+  useEffect(() => {
+    const fetchTableData = async () => {
+      const { data, error } = await supabaseClient
+        .from("categories")
+        .select("*");
+      if (error) {
+        console.error(error);
+      } else {
+        setCategories(data);
+      }
+    };
+    fetchTableData();
+  }, []);
+
+  useEffect(() => {
+    if (tableData && categories) {
+      console.log(getSpendPerCategory(tableData, categories));
+    }
+  }, [tableData, categories]);
+
   return (
-    <main className="flex-1 bg-white px-4 py-2">
-      <h1 className="text-lg font-bold mb-4">Dashboard</h1>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <div className="bg-gray-100 rounded-lg p-4">
-          <h2 className="text-lg font-bold mb-2">Total Expenses</h2>
-          <p className="text-3xl font-bold">$2,500</p>
-        </div>
-        <div className="bg-gray-100 rounded-lg p-4">
-          <h2 className="text-lg font-bold mb-2">Expenses This Month</h2>
-          <p className="text-3xl font-bold">$1,500</p>
-        </div>
-        <div className="bg-gray-100 rounded-lg p-4">
-          <h2 className="text-lg font-bold mb-2">Expenses This Week</h2>
-          <p className="text-3xl font-bold">$500</p>
-        </div>
-        <div className="bg-gray-100 rounded-lg p-4">
-          <h2 className="text-lg font-bold mb-2">Expenses Today</h2>
-          <p className="text-3xl font-bold">$100</p>
-        </div>
-      </div>
+    <main className="m-2">
+      <Title>Dashboard</Title>
+      <Text>How's the Spending Going?</Text>
+      <TabGroup className="mt-6">
+        <TabList>
+          <Tab>Budgets</Tab>
+          <Tab>Details</Tab>
+        </TabList>
+        <TabPanels>
+          <TabPanel>
+            <Grid numItemsMd={2} numItemsLg={3} className="gap-6 mt-6">
+              <Card>
+                <div className="h-28">
+                  <SpendCard />
+                </div>
+              </Card>
+              <Card>
+                <div className="h-28" />
+              </Card>
+              <Card>
+                <div className="h-28" />
+              </Card>
+            </Grid>
+            <div className="mt-6">
+              <Card>
+                <div className="h-80" />
+              </Card>
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div className="mt-6">
+              <Card>
+                <div className="h-96" />
+              </Card>
+            </div>
+          </TabPanel>
+        </TabPanels>
+      </TabGroup>
     </main>
   );
 };
