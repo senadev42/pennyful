@@ -6,14 +6,15 @@ import {
   ProgressBar,
   BadgeDelta,
   DeltaType,
+  Badge,
 } from "@tremor/react";
 
-const getDeltaType = (trend: number): DeltaType => {
-  if (trend < -35) return "decrease";
-  if (trend < 0) return "moderateDecrease";
-  if (trend === 0) return "unchanged";
-  if (trend < 30) return "moderateIncrease";
-  return "increase";
+const getColor = (percentage: number) => {
+  if (percentage < 40) return "green";
+  if (percentage < 60) return "yellow";
+  if (percentage < 80) return "orange";
+  if (percentage > 80) return "red";
+  return "green";
 };
 
 export const SpendCard = ({
@@ -36,11 +37,17 @@ export const SpendCard = ({
           <Text>{title}</Text>
           <Metric>{total}</Metric>
         </div>
-        <BadgeDelta deltaType={getDeltaType(trend)}>{`${trend}%`}</BadgeDelta>
+        {/* <BadgeDelta deltaType={getDeltaType(percentage)}>{`${percentage.toFixed(
+          2
+        )}%`}</BadgeDelta> */}
+        <Badge color={getColor(percentage)}>
+          {`${percentage.toFixed(2)}%`}
+        </Badge>
       </Flex>
       <Flex className="mt-4">
-        <Text className="truncate">{`${percentage}% (${total})`}</Text>
-        <Text>{`Target(${target})`}</Text>
+        <Text className="truncate">{`${total}`}</Text>
+
+        <Text>{`${target}`}</Text>
       </Flex>
       <ProgressBar value={percentage} className="mt-2" />
     </Card>
