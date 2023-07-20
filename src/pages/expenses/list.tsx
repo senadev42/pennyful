@@ -1,25 +1,40 @@
 import React from "react";
+import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
+
 import {
   IResourceComponentsProps,
   useNavigation,
   GetManyResponse,
   useMany,
+  useDelete,
 } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
 
+import { useOne } from "@refinedev/core";
+
 export const ExpenseList: React.FC<IResourceComponentsProps> = () => {
+  const { mutate: deleteExpense } = useDelete();
   const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
       {
-        id: "id",
-        accessorKey: "id",
-        header: "Id",
+        id: "date",
+        accessorKey: "date",
+        header: "Date",
+        cell: function render({ getValue }) {
+          return new Date(getValue<any>()).toLocaleDateString(undefined, {
+            timeZone: "UTC",
+          });
+        },
       },
       {
         id: "amount",
         accessorKey: "amount",
-        header: "Amount",
+        header: "Price",
+        cell: function render({ getValue }) {
+          const price = Number(getValue<any>());
+          return `$${price.toFixed(2)}`;
+        },
       },
       {
         id: "category_id",
@@ -38,16 +53,6 @@ export const ExpenseList: React.FC<IResourceComponentsProps> = () => {
         },
       },
       {
-        id: "date",
-        accessorKey: "date",
-        header: "Date",
-        cell: function render({ getValue }) {
-          return new Date(getValue<any>()).toLocaleString(undefined, {
-            timeZone: "UTC",
-          });
-        },
-      },
-      {
         id: "note",
         accessorKey: "note",
         header: "Note",
@@ -60,20 +65,31 @@ export const ExpenseList: React.FC<IResourceComponentsProps> = () => {
           return (
             <div className="flex flex-row flex-wrap gap-4">
               <button
-                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-1 px-2"
+                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-1 px-2 rounded"
                 onClick={() => {
                   show("expenses", getValue() as string);
                 }}
               >
-                Show
+                <FaEye />
               </button>
               <button
-                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-1 px-2"
+                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-1 px-2 rounded"
                 onClick={() => {
                   edit("expenses", getValue() as string);
                 }}
               >
-                Edit
+                <FaEdit />
+              </button>
+              <button
+                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-1 px-2 rounded"
+                onClick={() => {
+                  deleteExpense({
+                    resource: "expenses",
+                    id: getValue() as string,
+                  });
+                }}
+              >
+                <FaTrash />
               </button>
             </div>
           );
@@ -122,7 +138,7 @@ export const ExpenseList: React.FC<IResourceComponentsProps> = () => {
   }));
 
   return (
-    <div className="p-4">
+    <div className="p-4 h-[85vh]">
       <div className="flex justify-between items-center">
         <h1 className="text-xl font-bold">Expenses</h1>
         <button
