@@ -10,11 +10,11 @@ const LoginPage = () => {
   const handleLogin = async () => {
     try {
       const response = await authProvider.login({ email, password });
-      if (response.success) {
-        navigate(response.redirectTo);
-      } else {
-        throw new Error(response.message);
-      }
+      // if (response.success) {
+      //   navigate(response.redirectTo);
+      // } else {
+      //   throw new Error(response.message);
+      // }
     } catch (error) {
       console.error("Error logging in:", error);
     }

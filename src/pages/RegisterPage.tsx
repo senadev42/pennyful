@@ -8,16 +8,16 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const handleRegister = async () => {
-    try {
-      console.log("User: " + email + " Password: " + password);
-      const response = await authProvider.register({ email, password });
-      if (response.success) {
-        navigate(response.redirectTo);
-      }
-    } catch (error) {
-      console.error(error);
-      // Display error message to user
-    }
+    // try {
+    //   console.log("User: " + email + " Password: " + password);
+    //   const response = await authProvider.register({ email, password });
+    //   if (response.success) {
+    //     navigate(response.redirectTo);
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   // Display error message to user
+    // }
   };
 
   return (

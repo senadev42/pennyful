@@ -58,7 +58,6 @@ function App() {
   return (
     <BrowserRouter>
       {/* <GitHubBanner /> */}
-
       <RefineKbarProvider>
         <Refine
           dataProvider={dataProvider(supabaseClient)}
@@ -66,7 +65,7 @@ function App() {
           // authProvider={authProvider}
           routerProvider={routerBindings}
           resources={[
-            { name: "dashboard", list: "/dashboard" },
+            { name: "dashboard", list: "/" },
             {
               name: "expenses",
               list: "/expenses",
@@ -113,10 +112,7 @@ function App() {
                 </Authenticated>
               }
             >
-              <Route
-                index
-                element={<NavigateToResource resource="blog_posts" />}
-              />
+              <Route path="/" element={<DashboardPage />} />
               <Route path="/categories">
                 <Route index element={<CategoryList />} />
                 <Route path="create" element={<CategoryCreate />} />

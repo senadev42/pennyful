@@ -4,6 +4,7 @@ import {
   useNavigation,
   GetManyResponse,
   useMany,
+  useDelete,
 } from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
@@ -11,7 +12,8 @@ import { supabaseClient } from "../../utility/supabaseClient";
 import { FaEye, FaEdit, FaTrash } from "react-icons/fa";
 
 export const BudgetList: React.FC<IResourceComponentsProps> = () => {
-  const [categories, setCategories] = useState([]);
+  const { mutate: deleteBudget } = useDelete();
+  const [categories, setCategories] = useState<any[]>([]);
   useEffect(() => {
     const fetchTableData = async () => {
       const { data, error } = await supabaseClient
@@ -84,7 +86,7 @@ export const BudgetList: React.FC<IResourceComponentsProps> = () => {
               <button
                 className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-1 px-2 rounded"
                 onClick={() => {
-                  deleteExpense({
+                  deleteBudget({
                     resource: "budgets",
                     id: getValue() as string,
                   });
