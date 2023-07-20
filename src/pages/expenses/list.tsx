@@ -149,7 +149,7 @@ export const ExpenseList: React.FC<IResourceComponentsProps> = () => {
         </button>
       </div>
       <hr className="my-2 "></hr>
-      <div className="max-w-full overflow-y-scroll">
+      <div className="max-w-full ">
         <table className="w-full">
           <thead>
             {getHeaderGroups().map((headerGroup) => (
