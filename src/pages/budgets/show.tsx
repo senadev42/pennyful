@@ -43,7 +43,7 @@ export const BudgetShow: React.FC<IResourceComponentsProps> = () => {
         </div>
       </div>
       <div className="mt-6">
-        <div className="mt-6">
+        <div className="mt-6 bg-zinc-100 p-2 rounded">
           <h5 className="font-bold">Name</h5>
           <div>{record?.name}</div>
         </div>
@@ -63,7 +63,7 @@ export const BudgetShow: React.FC<IResourceComponentsProps> = () => {
             <div className="mt-6">
               <h5 className="font-bold">Start Date</h5>
               <div>
-                {new Date(record?.start_date).toLocaleString(undefined, {
+                {new Date(record?.start_date).toLocaleDateString(undefined, {
                   timeZone: "UTC",
                 })}
               </div>
@@ -71,14 +71,14 @@ export const BudgetShow: React.FC<IResourceComponentsProps> = () => {
             <div className="mt-6">
               <h5 className="font-bold">End Date</h5>
               <div>
-                {new Date(record?.end_date).toLocaleString(undefined, {
+                {new Date(record?.end_date).toLocaleDateString(undefined, {
                   timeZone: "UTC",
                 })}
               </div>
             </div>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-6 px-10">
             <h5 className="font-bold">Category</h5>
             <ul>
               {categoryIsLoading && record?.category_ids?.length ? (

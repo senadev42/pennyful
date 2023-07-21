@@ -24,50 +24,54 @@ export const ExpenseShow: React.FC<IResourceComponentsProps> = () => {
   });
 
   return (
-    <div style={{ padding: "16px" }}>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <h1>Expense Show</h1>
-        <div style={{ display: "flex", gap: "8px" }}>
-          <button onClick={() => list("expenses")}>Expenses</button>
-          <button onClick={() => edit("expenses", id ?? "")}>Edit</button>
+    <div className="p-4">
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-xl font-bold">Expense Show</h1>
+        <div className="flex gap-2">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={() => list("expenses")}
+          >
+            Expenses
+          </button>
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={() => edit("expenses", id ?? "")}
+          >
+            Edit
+          </button>
         </div>
       </div>
-      <div>
-        <div style={{ marginTop: "6px" }}>
-          <h5>Id</h5>
-          <div>{record?.id ?? ""}</div>
-        </div>
-        <div style={{ marginTop: "6px" }}>
-          <h5>Amount</h5>
-          <div>{record?.amount ?? ""}</div>
-        </div>
-        <div style={{ marginTop: "6px" }}>
-          <h5>Category</h5>
-          <div>
-            {categoryIsLoading ? (
-              <>Loading...</>
-            ) : (
-              <>{categoryData?.data?.name}</>
-            )}
+      <div className="max-w-sm flex flex-row p-4">
+        <div className="mr-4">
+          <div className="my-4">
+            <h5 className="font-bold">Amount</h5>
+            <div>{record?.amount ?? ""}</div>
+          </div>
+          <div className="my-4">
+            <h5 className="font-bold">Category</h5>
+            <div>
+              {categoryIsLoading ? (
+                <span>Loading...</span>
+              ) : (
+                <span>{categoryData?.data?.name}</span>
+              )}
+            </div>
           </div>
         </div>
-        <div style={{ marginTop: "6px" }}>
-          <h5>Date</h5>
-          <div>
-            {new Date(record?.date).toLocaleString(undefined, {
-              timeZone: "UTC",
-            })}
+        <div>
+          <div className="my-4">
+            <h5 className="font-bold">Date</h5>
+            <div>
+              {new Date(record?.date).toLocaleString(undefined, {
+                timeZone: "UTC",
+              })}
+            </div>
           </div>
-        </div>
-        <div style={{ marginTop: "6px" }}>
-          <h5>Note</h5>
-          <div>{record?.note}</div>
+          <div className="my-4">
+            <h5 className="font-bold">Note</h5>
+            <div>{record?.note}</div>
+          </div>
         </div>
       </div>
     </div>

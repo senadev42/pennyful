@@ -1,9 +1,15 @@
 import React from "react";
-import { IResourceComponentsProps, useNavigation } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  useDelete,
+  useNavigation,
+} from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 export const CategoryList: React.FC<IResourceComponentsProps> = () => {
+  const { mutate: deleteCategory } = useDelete();
   const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
       {
@@ -19,20 +25,23 @@ export const CategoryList: React.FC<IResourceComponentsProps> = () => {
           return (
             <div className="flex flex-row flex-wrap gap-4">
               <button
-                className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-600"
+                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-1 px-2 rounded"
                 onClick={() => {
-                  show("categories", getValue() as string);
+                  edit("expenses", getValue() as string);
                 }}
               >
-                Show
+                <FaEdit />
               </button>
               <button
-                className="px-4 py-2 bg-teal-500 text-white rounded hover:bg-teal-600"
+                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-1 px-2 rounded"
                 onClick={() => {
-                  edit("categories", getValue() as string);
+                  deleteCategory({
+                    resource: "categories",
+                    id: getValue() as string,
+                  });
                 }}
               >
-                Edit
+                <FaTrash />
               </button>
             </div>
           );
